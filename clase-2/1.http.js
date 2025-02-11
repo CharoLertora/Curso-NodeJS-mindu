@@ -1,13 +1,17 @@
 const http = require('node:http') // protocolo HTTP
 const fs = require('node:fs')
 
-const desiredPort = process.env.PORT ?? 1234
+const desiredPort = process.env.PORT ?? 1234 // podemos editar la variable de entorno PORT antes de ejecutar el archivo con un puerto deseado y se va a modificar. Sino, tomará el valor 3000
 
+/*
+  Para que la página se actualice automáticamente podemos usar el comando --watch al ejecutar
+  O utilizar la dependencia muy famosa que se llama nodemon. Buscarlo en github. Se puede instalar como una dependencia de desarrollo con: npm install nodemon -D.
+
+*/
 const processRequest = (req, res) => {
   res.setHeader('Content-Type', 'text/html; charset=utf-8')
-
   if (req.url === '/') {
-    res.end('<h1>Mi página</h1>')
+    res.end('Mi página')
   } else if (req.url === '/imagen-super-bonita.png') {
     fs.readFile('./placa.png', (err, data) => {
       if (err) {
@@ -21,11 +25,10 @@ const processRequest = (req, res) => {
   } else if (req.url === '/contacto') {
     res.end('<h1>Contacto</h1>')
   } else {
-    res.statusCode = 404 // Not Found
+    res.statusCode = 404 // Not found
     res.end('<h1>404</h1>')
   }
 }
-
 const server = http.createServer(processRequest)
 
 server.listen(desiredPort, () => {
